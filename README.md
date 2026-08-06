@@ -83,3 +83,7 @@ npm run db:studio  # open Prisma Studio
 ## License
 
 MIT
+
+## Aspen Grove
+Standalone product package (MIT). Meta mesh: [aspen-grove](https://github.com/AbsolutionAI/aspen-grove).  
+Third-party checklist: `THIRD_PARTY.md`.

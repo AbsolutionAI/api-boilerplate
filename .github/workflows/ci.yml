@@ -1,26 +1,15 @@
-name: CI
+name: ci
 on: [push, pull_request]
-
 jobs:
-  test:
+  smoke:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: app
-          POSTGRES_PASSWORD: secret
-          POSTGRES_DB: app_test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-      - run: npm ci
-      - run: npx prisma generate
-      - run: npm test
+          node-version: '20'
+          cache: npm
+      - run: npm ci || npm install
+      - run: cp .env.example .env
+      - run: npx prisma db push
+      - run: make smoke
