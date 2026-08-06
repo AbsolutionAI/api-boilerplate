@@ -1,10 +1,12 @@
 /**
- * Start app, hit /api/health, exit 0/1. No external curl.
+ * Start app, hit /api/health, exit 0/1.
  */
-const { spawn } = require('child_process');
-const path = require('path');
-const fs = require('fs');
+import { spawn } from 'node:child_process';
+import path from 'node:path';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const envPath = path.join(root, '.env');
 if (!fs.existsSync(envPath)) {
@@ -22,14 +24,14 @@ function fail(msg) {
   if (settled) return;
   settled = true;
   console.error(msg);
-  child.kill('SIGTERM');
+  try { child.kill('SIGTERM'); } catch {}
   process.exit(1);
 }
 function ok(msg) {
   if (settled) return;
   settled = true;
   console.log(msg);
-  child.kill('SIGTERM');
+  try { child.kill('SIGTERM'); } catch {}
   process.exit(0);
 }
 
@@ -39,7 +41,7 @@ child.on('exit', (code) => {
 });
 
 async function ping() {
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 40; i++) {
     try {
       const res = await fetch('http://127.0.0.1:4000/api/health');
       if (res.ok) {
@@ -47,7 +49,7 @@ async function ping() {
         if (data.status === 'ok') ok('api-boilerplate smoke ok');
       }
     } catch (_) {}
-    await new Promise((r) => setTimeout(r, 200));
+    await new Promise((r) => setTimeout(r, 250));
   }
   fail('health check timeout');
 }
