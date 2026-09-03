@@ -12,7 +12,7 @@
     "db:studio": "npx prisma studio"
   },
   "dependencies": {
-    "express": "^4.19.0",
+    "express": "^5.2.1",
     "cors": "^2.8.5",
     "morgan": "^1.10.0",
     "helmet": "^7.1.0",
