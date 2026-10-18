@@ -15,12 +15,14 @@ Server runs at `http://localhost:4000`.
 
 ## Environment Variables
 
-Copy `.env.example` to `.env` and adjust as needed:
+Copy `.env.example` to `.env` and adjust as needed. `.env` is loaded automatically at startup (Node 20.12+); real environment variables take precedence.
+
+Generate a secret: `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `PORT` | `4000` | HTTP port |
-| `JWT_SECRET` | *(required)* | Secret used to sign JWTs — **change before production** |
+| `JWT_SECRET` | *(required)* | Secret used to sign JWTs, 32+ random characters. With `NODE_ENV=production` the server refuses to start if it is missing or still a placeholder. |
 | `DATABASE_URL` | `file:./dev.db` | Prisma connection string (SQLite by default) |
 | `RATE_LIMIT_MAX` | `100` | Max requests per IP per 15-minute window |
 
