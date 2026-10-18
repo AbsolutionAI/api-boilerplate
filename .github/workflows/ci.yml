@@ -13,3 +13,4 @@ jobs:
       - run: cp .env.example .env
       - run: npx prisma db push
       - run: make smoke
+      - run: npm test
